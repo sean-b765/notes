@@ -1,2 +1,3 @@
-# algorithms-datastructures
-A compilation of algorithms, data structures and more essential CS notes.
+# Computer Science notes
+
+A compilation of algorithms, data structures, networking, computer architecture, programming and more essential CS notes.
