@@ -1,5 +1,7 @@
 # The Document Object Model
 
+---
+
 - [Tree Structure](#tree-structure)
 - [DOM Manipulation](#dom-manipulation)
   - [XPath](#xpath)
@@ -9,6 +11,10 @@
   - [Children](#children)
   - [Create a Node](#create-a-node)
   - [Adding Elements](#adding-elements)
+  - [Events](#events)
+    - [Bubbling Phase](#bubbling-phase)
+    - [Capture Phase](#capture-phase)
+  - [Overview of Event Phases](#overview-of-phases)
 
 ## Tree Structure
 
@@ -92,17 +98,19 @@ myDiv.querySelector('someText')
 ```
 
 **Note:**
-`getElementById()` is about 2x faster than `querySelector()`. While this different is still negligible, as both run extremely fast, it is best to avoid performing `querySelector()` calls in bulk.
+`getElementById()` is about 2x faster than `querySelector()`. While this difference is still negligible, as both run extremely fast, it is best to avoid performing `querySelector()` calls in bulk.
 
 ---
+
+`querySelector()` vs `getElementById()`
 
 > [CodeSandbox benchmark](https://codesandbox.io/s/benchmark-queryselector-kx2vf?file=/src/index.js)
 
 > [Benchmarking via measurethat.net`](https://www.measurethat.net/Benchmarks/Show/2488/0/getelementbyid-vs-queryselector)
 
----
-
 ![Performance](querySelector%20performance.png)
+
+---
 
 Searching via XPath:
 
@@ -215,8 +223,61 @@ heading.insertAdjacentElement('afterend', subTitle)
 <!-- "afterend": after the .target -->
 ```
 
+### Events
+
+You can listen to events on any DOM element, even the window itself.
+
+```js
+window.addEventListener('click', () => {
+	// do something
+})
+```
+
+When a click is performed, it will be handled by the window event listener. Regardless of what is clicked, as long as it's a child of the window.
+
+#### Bubbling Phase
+
+When clicking an element, the event will "bubble", i.e. be triggered in an upward fashion on each parent element, until it reaches the topmost element. Consider the codesandbox example:
+
+[View CodeSandbox Demo](https://codesandbox.io/s/bubbling-rkfdx?file=/index.html)
+
+![CodeSandbox code snippet](./bubbling.png)
+
+When the `p` is clicked, the first function to be triggered is the 'p'. When this has completed, 'div' will be triggered, and lastly 'form'.
+
+##### `e.stopPropagation()`
+
+This line halts the event flow. If you're in the bubbling phase, it will stop any events being fired after you call this function. You'll see in the [CodeSandbox](https://codesandbox.io/s/bubbling-rkfdx?file=/index.html) link I've left the line `e.stopPropagation()` commented.
+
+##### `e.stopImmediatePropagation()`
+
+Performs the same task as `e.stopPropagation()`, however, if there are multiple events attached to one element, it will stop these events being fired as well.
+
+##### `e.target`
+
+`e.target` represents the element which was actually clicked. If the `p` was clicked and you use the value of `e.target` in the `form` listener, it will contain the `p` DOM node.
+
+#### Capturing Phase
+
+Is like the opposite of bubbling. While bubbling goes up the DOM tree, capturing occurs before any bubbling and goes down the DOM tree. The capture phase happens before the bubbling phase. To register a capture event you add `true` as an option after your event callback:
+
+```js
+element.addEventListener('click', () => {}, { capture: true })
+
+// or simply:
+
+element.addEventListener('click', () => {}, true)
+```
+
+#### Overview of Phases
+
+![Bubble-Capture phases](./bubble-capture.drawio.png)
+
+---
+
 References
 
 - [thegitfather - github](https://gist.github.com/thegitfather/9c9f1a927cd57df14a59c268f118ce86/)
 - [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentElement)
 - [W3Schools](https://www.w3schools.com/jsref/dom_obj_all.asp)
+- [Bubbling and capturing - javascript.info](https://javascript.info/bubbling-and-capturing)
