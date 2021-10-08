@@ -35,13 +35,13 @@ Is a loop which runs throughout the program lifecycle. It waits for a message to
 
 ## Web APIs
 
-These may be [Browser APIs](https://developer.mozilla.org/en-US/docs/Web/API) or third-party APIs / libraries. **Browser APIs** are JavaScript code built into the browser, such as fetch, the DOM, Screen Capture, Drag & Drop. **Third-party APIs** are usually endpoints which need a connection made to them, such as a JSON/REST API. **Third-party libraries** are available to download and use with JavaScript and provide functionality beyond that of the Browser API.
+These may be [Browser APIs](https://developer.mozilla.org/en-US/docs/Web/API) or third-party APIs / libraries. **Browser APIs** are JavaScript code built into the browser, such as fetch, the DOM, Screen Capture, Drag & Drop. **Third-party APIs** are endpoints which need a connection made to them, such as a JSON or REST API. **Third-party libraries** are available to download and use with JavaScript and provide functionality beyond that of the Browser API.
 
 ## Behaviour
 
 ### Asynchronous Effect
 
-JS is single-threaded and synchronous. To achieve asynchronicity, callbacks (or promises) are used. When making external API calls with fetch, ajax, axios, etc. other code doesn't get blocked because the request happens in the background, while the function call (e.g. `axios.get(url)`) stops. Only when the response has been fulfilled will the callback / promise be put into the message queue, where it waits it's turn to be called in the event loop.
+JS is single-threaded and synchronous. To achieve asynchronicity, callbacks (or promises) are used. When making external API calls with fetch, ajax, axios, etc. other code doesn't get blocked because the request happens in the background. First, the initial call is sent to the message queue, i.e. `axios.get(url)`, then after this executes in the event loop, normal program operations are performed. Only when a response has been received will the callback/promise be pushed into the message queue, where it waits it's turn to be called in the event loop.
 
 An HTTP request is an OS feature and therefore JavaScript can command this to run in the background while the event loop resumes.
 
@@ -49,7 +49,7 @@ An HTTP request is an OS feature and therefore JavaScript can command this to ru
 
 ### setTimeout
 
-The second argument in `setTimeout` indicates the _minimum_ delay which the function is called after. This is because if there are already messages in the message queue, it will have to wait for those messages to be fulfilled first. If there is no messages waiting in the message queue, it will be processed straight after the delay _(500ms)_. For this reason, large applications with lots of messages queued will perform callbacks slower.
+The second argument in `setTimeout` indicates the _minimum_ delay which the function is called after. This is because if there are already messages in the message queue, it will have to wait for those messages to be fulfilled first. If there are no messages waiting in the message queue, it will be processed straight after the delay _(500ms)_. For this reason, large applications with lots of queued messages will perform slower.
 
 ```js
 setTimeout(function () {}, 500)
@@ -61,7 +61,7 @@ Part of why browsers such as Chrome or Firefox can be so memory heavy are becaus
 
 #### `<iframe>`
 
-Frames are essentially embedded documents with their own JavaScript context. An `<iframe>` (inline frame) is an HTML element which embeds a separate HTML document. The iframe will have it's own JS context, but does not constitute as a separate runtime. This means iframes with scripts can block their parent document. To test this I've created a document, `parent.html` which has an iframe referencing `nested.html`.
+An `<iframe>` (inline frame) is an HTML element which embeds a separate HTML document. The iframe will have it's own JS context, but does not constitute as a separate runtime. This means iframes with scripts can block their parent document. To test this I've created a document, `parent.html` which has an iframe referencing `nested.html`.
 
 `nested.html` contains a event listener which blocks the message queue for 1 second when called.
 
@@ -80,7 +80,7 @@ When clicking the Block button you can see the counter in `parent.html` stop. It
 
 ##### Cross-origin iframes
 
-Work slightly different to same-origin iframes in some browsers. Chrome, Opera and Microsoft Edge, for instance, does not get blocked when the same test is performed using the above code, while Firefox does get blocked by the iframe. This suggests it delegates a separate process for a cross-origin iframe element. You can test this yourself using the commented iframe in parent.html
+Work slightly different to same-origin iframes in some browsers. Chrome, Opera and Microsoft Edge, for instance, does not get blocked when the same test is performed using the above code, while Firefox does get blocked by the iframe. This suggests that some browsers delegates a separate process for a cross-origin iframe element. You can test this yourself using the commented iframe in `parent.html`
 
 [Out-of-Process iframes](https://www.chromium.org/developers/design-documents/oop-iframes) are documented by The Chromium Projects and are listed as a security measure.
 
