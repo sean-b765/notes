@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Parent</title>
+	</head>
+	<body>
+		<iframe src="nested.html"></iframe>
+		<!-- <iframe src="https://gracious-shockley-16d8ed.netlify.app/"></iframe> -->
+
+		<div id="div"></div>
+
+		<script>
+			let i = 0
+			setInterval(() => {
+				document.getElementById('div').innerHTML = i++
+			})
+		</script>
+	</body>
+</html>

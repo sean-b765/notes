@@ -91,6 +91,19 @@ document.querySelectorAll('#myDiv')
 myDiv.querySelector('someText')
 ```
 
+**Note:**
+`getElementById()` is about 2x faster than `querySelector()`. While this different is still negligible, as both run extremely fast, it is best to avoid performing `querySelector()` calls in bulk.
+
+---
+
+> [CodeSandbox benchmark](https://codesandbox.io/s/benchmark-queryselector-kx2vf?file=/src/index.js)
+
+> [Benchmarking via measurethat.net`](https://www.measurethat.net/Benchmarks/Show/2488/0/getelementbyid-vs-queryselector)
+
+---
+
+![Performance](querySelector%20performance.png)
+
 Searching via XPath:
 
 ```js
@@ -166,6 +179,7 @@ heading.innerText = 'Hello World!'
 ### Adding Elements
 
 View the result of the below code:
+
 ![Result of below code](placing%20elements.png)
 
 And the code needed to create this div, along with all it's children:
@@ -200,3 +214,9 @@ heading.insertAdjacentElement('afterend', subTitle)
 </div>
 <!-- "afterend": after the .target -->
 ```
+
+References
+
+- [thegitfather - github](https://gist.github.com/thegitfather/9c9f1a927cd57df14a59c268f118ce86/)
+- [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentElement)
+- [W3Schools](https://www.w3schools.com/jsref/dom_obj_all.asp)

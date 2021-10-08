@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Nested</title>
+	</head>
+	<body>
+		<h1>Separate HTML Doc!</h1>
+
+		<button id="blocker">Block</button>
+
+		<script>
+			document.getElementById('blocker').addEventListener('click', () => {
+				const start = Date.now()
+				while (start + 1000 > Date.now()) {}
+			})
+		</script>
+	</body>
+</html>
