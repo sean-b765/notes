@@ -109,6 +109,36 @@ count() // Outputs: Counter value: 4
 
 ```
 
+# Hoisting
+Hoisting is the behaviour of moving declarations to the top of the file. 
+
+`var`s can be used before they are initialised, while `let`s cannot.
+
+```js
+
+console.log(x) // returns undefined
+console.log(y) // ReferenceError
+
+var x = 1
+let y = 2
+
+```
+
+Named functions can also be invoked before they are declared. Anonymous functions **cannot** be invoked before they are declared.
+
+```js
+test() // Output: "Test"
+test2() // ReferenceError
+
+function test() {
+  console.log('Test')
+}
+
+const test2 = () => {
+  console.log('Test2')
+}
+```
+
 # Scope
 The scope determines accessibility of variables.
 
@@ -157,7 +187,7 @@ console.log(x) // ReferenceError
 
 ```
 
-### `let` vs `var` vs `const`
+## `let` vs `var` vs `const`
 | statement | scope | initialised? | can redeclare? |
 | --- | --- | --- | --- |
 | `var` | function scope | undefined | yes |
