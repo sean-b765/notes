@@ -68,7 +68,7 @@ It is recommended to name IIFEs, for reasons I will get into soon.
 
 
 # Closures
-A closure is the environment surrounding a function. Whenever a function is created, it is bundled together with references to required variables in the upper scope. The closure gives you access to the parent/outer function's scope, even if the parent function has closed. 
+A closure is the environment surrounding a function. Whenever a function is created, it is bundled together with references to required variables from the outer scope. The closure gives you access to the parent/outer function's scope, even if the parent function has closed. 
 
 ```js
 
